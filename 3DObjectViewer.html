@@ -1121,7 +1121,7 @@ function init(file)
 
 			var wirePlane=new THREE.Mesh(new THREE.PlaneGeometry(x,y,division_x,division_y),new THREE.MeshPhongMaterial({emissive:0x707070,color:0x000000,wireframe:true,wireframeLinewidth:1}));
 			wirePlane.receiveShadow=true;
-			wirePlane.position.z = box.min.z - 1;
+			wirePlane.position.z = box.min.z - 0.1;
 			scene.add(wirePlane);
 
 			var distance;
