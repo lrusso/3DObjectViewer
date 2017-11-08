@@ -93,13 +93,11 @@ body
 		<div class='leftitem'>
 			<input type='file' id='modelOBJ' onChange='runViewer();'>
 		</div>
-		<div class='rightitem'>By LRusso.com - All rights reserved.</div>
+		<div class='rightitem' id='about'></div>
 	</div>
 </div>
 
 <script type="text/javascript">
-document.title = "3D Object Viewer";
-
 // threejs.org/license
 (function(m,ja){"object"===typeof exports&&"undefined"!==typeof module?ja(exports):"function"===typeof define&&define.amd?define(["exports"],ja):ja(m.THREE=m.THREE||{})})(this,function(m){function ja(){}function D(a,b){this.x=a||0;this.y=b||0}function K(){this.elements=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];0<arguments.length&&console.error("THREE.Matrix4: the constructor no longer reads arguments. use .set() instead.")}function ga(a,b,c,d){this._x=a||0;this._y=b||0;this._z=c||0;this._w=void 0!==d?d:1}
 function p(a,b,c){this.x=a||0;this.y=b||0;this.z=c||0}function ua(){this.elements=[1,0,0,0,1,0,0,0,1];0<arguments.length&&console.error("THREE.Matrix3: the constructor no longer reads arguments. use .set() instead.")}function S(a,b,c,d,e,f,g,h,k,l){Object.defineProperty(this,"id",{value:kf++});this.uuid=R.generateUUID();this.name="";this.image=void 0!==a?a:S.DEFAULT_IMAGE;this.mipmaps=[];this.mapping=void 0!==b?b:S.DEFAULT_MAPPING;this.wrapS=void 0!==c?c:1001;this.wrapT=void 0!==d?d:1001;this.magFilter=
@@ -1001,7 +999,19 @@ THREE.OrbitControls=function(e,t){function n(){return 2*Math.PI/60/60*k.autoRota
 // PART OF THE VOLUME CALCULATOR SCRIPT
 function signedVolumeOfTriangle(p1,p2,p3){var v321 = p3.x*p2.y*p1.z;var v231 = p2.x*p3.y*p1.z;var v312 = p3.x*p1.y*p2.z;var v132 = p1.x*p3.y*p2.z;var v213 = p2.x*p1.y*p3.z;var v123 = p1.x*p2.y*p3.z;return (-v321 + v231 + v312 - v132 - v213 + v123)/6;}
 
+// THE BROWSER LANGUAGE VARIABLE
+var userLanguage = window.navigator.userLanguage || window.navigator.language;
+
 var container, camera, scene, renderer, controls, light, vol;
+
+if (userLanguage.substring(0,2)=="es")
+	{
+	document.getElementById('about').innerHTML = 'Por LRusso.com - Todos los derechos reservados.';
+	}
+	else
+	{
+	document.getElementById('about').innerHTML = 'By LRusso.com - All rights reserved.';
+	}
 
 function init(file)
 	{
@@ -1028,7 +1038,14 @@ function init(file)
 		}
 		else
 		{
-		alert("ERROR: Please check that the model is STL model.");
+		if (userLanguage.substring(0,2)=="es")
+			{
+			alert("ERROR: Por favor verifique que el modelo se encuentre en formato STL.");
+			}
+			else
+			{
+			alert("ERROR: Please check that the model is STL model.");
+			}	
 		}
 
 	reader.addEventListener("load", function (event)
@@ -1086,7 +1103,14 @@ function init(file)
 			var volumeFinal = vol / 1000;volumeFinal = volumeFinal.toFixed(2);
 			var weightFinal = volumeFinal * density;weightFinal = weightFinal.toFixed(2);
 
-			document.getElementById('container2').innerHTML="Density: " + density + " gm/cc<br/>" + "Weight: " + weightFinal + " gm<br/>" + "Volume: " + volumeFinal + " cm3<br/>" + "Size: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm"; 
+			if (userLanguage.substring(0,2)=="es")
+				{
+				document.getElementById('container2').innerHTML="Densidad: " + density + " gm/cc<br/>" + "Peso: " + weightFinal + " gm<br/>" + "Volumen: " + volumeFinal + " cm3<br/>" + "Tama&ntilde;o: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm"; 
+				}
+				else
+				{
+				document.getElementById('container2').innerHTML="Density: " + density + " gm/cc<br/>" + "Weight: " + weightFinal + " gm<br/>" + "Volume: " + volumeFinal + " cm3<br/>" + "Size: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm"; 
+				}
 
 			var medida;
 
@@ -1108,8 +1132,14 @@ function init(file)
 			}
 			catch(err)
 			{
-			alert(err);
-			alert("ERROR: Please check that the model is STL model.");
+			if (userLanguage.substring(0,2)=="es")
+				{
+				alert("ERROR: Por favor verifique que el modelo se encuentre en formato STL.");
+				}
+				else
+				{
+				alert("ERROR: Please check that the model is STL model.");
+				}
 			}
 		}, false);
 
@@ -1141,7 +1171,14 @@ function runViewer()
 		}
 		else
 		{
-		alert("ERROR: You must select a file.");
+		if (userLanguage.substring(0,2)=="es")
+			{
+			alert("ERROR: Debe seleccionar un archivo.");
+			}
+			else
+			{
+			alert("ERROR: You must select a file.");
+			}
 		}
 	}
 </script>
