@@ -42,6 +42,7 @@ body
 	top:8px;
 	margin-left:5px;
 	z-index:999;
+	cursor:default;
 	}
 .container3
 	{
@@ -1173,7 +1174,9 @@ function init(file)
 
 			camera.position.set(0, -distance, 0);
 
-			controls = new THREE.OrbitControls(camera, renderer.domElement);
+			// AN ALTERNATIVE FOR MOVING THE OBJECT USING THE MOUSE WITHIN THE RENDERER
+			// controls = new THREE.OrbitControls(camera, renderer.domElement);
+			controls = new THREE.OrbitControls(camera);
 			controls.update();
 
 			scene.add(mesh);
