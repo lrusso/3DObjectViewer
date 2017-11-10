@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+   	  xmlns:ar.com.lrusso.dobjectviewer="http://schemas.android.com/apk/res-auto" >
+    <item 	android:id="@+id/action_settings"
+        	android:icon="@drawable/abc_ic_menu_moreoverflow_normal_holo_light"
+			android:title="@string/action_settings"
+			ar.com.lrusso.dobjectviewer:showAsAction="always" />
+</menu>

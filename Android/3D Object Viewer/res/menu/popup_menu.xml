@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ar.com.lrusso.dobjectviewer="http://schemas.android.com/apk/res-auto">
+	<item android:id="@+id/privacy" android:title="@string/textPrivacy"/>  
+    <item android:id="@+id/about" android:title="@string/textAbout"/>  
+</menu>  
