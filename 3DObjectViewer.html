@@ -43,6 +43,7 @@ body
 	margin-left:5px;
 	z-index:999;
 	cursor:default;
+	display:none;
 	}
 .container3
 	{
@@ -74,9 +75,18 @@ body
 	line-height:30px;
 	height:30px;
 	}
+.buttonChanger
+	{
+	font-size:13px;
+	font-family:Arial;
+	line-height:13px;
+	color:black;
+	text-align:left;
+    }
 #modelOBJ
 	{
 	font-size:13px;
+	font-family:Arial;
 	line-height:13px;
 	height:30px;
 	color:black;
@@ -84,19 +94,24 @@ body
 	border:0 silver solid;
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
-	box-sizing:border-box;		
+	box-sizing:border-box;
 	}
 
 </style>
 
-<div class='content'>
-	<div id='container'></div>
-	<div id='container2'></div>
-	<div class='container3'>
-		<div class='leftitem'>
-			<input type='file' id='modelOBJ' onChange='runViewer();'>
+<div class="content">
+	<div id="container"></div>
+	<div id="container2">
+		<span id="densityLabel"></span>:&nbsp;<span id="densityValue"></span>&nbsp;gm/cc&nbsp;<input type="submit" class="buttonChanger" onclick="moreDensity(true);" value="+"/>&nbsp;<input type="submit" class="buttonChanger" onclick="moreDensity(false);" value="-"/><br />
+		<span id="weightLabel"></span>:&nbsp;<span id="weightValue"></span>&nbsp;gm<br />
+		<span id="volumeLabel"></span>:&nbsp;<span id="volumeValue"></span>&nbsp;cm3<br />
+		<span id="sizeLabel"></span>:&nbsp;<span id="widthValue"></span>x<span id="depthValue"></span>x<span id="heightValue"></span>&nbsp;cm<br />
+	</div>
+	<div class="container3">
+		<div class="leftitem">
+			<input type="file" id="modelOBJ" onChange="runViewer();">
 		</div>
-		<div class='rightitem' id='about'></div>
+		<div class="rightitem" id="about"></div>
 	</div>
 </div>
 
@@ -1014,15 +1029,25 @@ function signedVolumeOfTriangle(p1,p2,p3){var v321 = p3.x*p2.y*p1.z;var v231 = p
 // THE BROWSER LANGUAGE VARIABLE
 var userLanguage = window.navigator.userLanguage || window.navigator.language;
 
-var container, camera, scene, renderer, controls, light, vol, mesh;
+var container, camera, scene, renderer, controls, light, vol, mesh, height, heightFinal, width, widthFinal, depth, depthFinal;
+
+var density = parseFloat("1.04");
 
 if (userLanguage.substring(0,2)=="es")
 	{
-	document.getElementById('about').innerHTML = 'Por LRusso.com - Todos los derechos reservados.';
+	document.getElementById("densityLabel").innerHTML = "Densidad";
+	document.getElementById("weightLabel").innerHTML = "Peso";
+	document.getElementById("volumeLabel").innerHTML = "Volumen";
+	document.getElementById("sizeLabel").innerHTML = "Medidas";
+	document.getElementById("about").innerHTML = "Por LRusso.com - Todos los derechos reservados.";
 	}
 	else
 	{
-	document.getElementById('about').innerHTML = 'By LRusso.com - All rights reserved.';
+	document.getElementById("densityLabel").innerHTML = "Density";
+	document.getElementById("weightLabel").innerHTML = "Weight";
+	document.getElementById("volumeLabel").innerHTML = "Volume";
+	document.getElementById("sizeLabel").innerHTML = "Size";
+	document.getElementById("about").innerHTML = "By LRusso.com - All rights reserved.";
 	}
 
 function init(file)
@@ -1043,7 +1068,6 @@ function init(file)
 	var filename = file.name;
 	var extension = filename.split(".").pop().toLowerCase();
 	var reader = new FileReader();
-	document.getElementById("container2").innerHTML="";
 
 	if (extension=="stl")
 		{
@@ -1059,6 +1083,7 @@ function init(file)
 		}
 		else
 		{
+		document.getElementById("container2").style.display="none";
 		if (userLanguage.substring(0,2)=="es")
 			{
 			alert("ERROR: Por favor verifique que el modelo se encuentre en formato STL, OBJ o 3DS.");
@@ -1131,25 +1156,23 @@ function init(file)
 
 			var box = new THREE.Box3().setFromObject(mesh);
 
-			var height = box.max.z - box.min.z;
-			var width = box.max.x - box.min.x;
-			var depth = box.max.y - box.min.y;
+			height = box.max.z - box.min.z;
+			width = box.max.x - box.min.x;
+			depth = box.max.y - box.min.y;
 
-			var density = 1.04;
-			var heightFinal = height / 10;heightFinal = heightFinal.toFixed(2);
-			var widthFinal = width / 10;widthFinal = widthFinal.toFixed(2);
-			var depthFinal = depth / 10;depthFinal = depthFinal.toFixed(2);
+			heightFinal = height / 10;heightFinal = heightFinal.toFixed(2);
+			widthFinal = width / 10;widthFinal = widthFinal.toFixed(2);
+			depthFinal = depth / 10;depthFinal = depthFinal.toFixed(2);
 			var volumeFinal = vol / 1000;volumeFinal = volumeFinal.toFixed(2);
 			var weightFinal = volumeFinal * density;weightFinal = weightFinal.toFixed(2);
 
-			if (userLanguage.substring(0,2)=="es")
-				{
-				document.getElementById("container2").innerHTML="Densidad: " + density + " gm/cc<br />" + "Peso: " + weightFinal + " gm<br />" + "Volumen: " + volumeFinal + " cm3<br />" + "Medidas: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm"; 
-				}
-				else
-				{
-				document.getElementById("container2").innerHTML="Density: " + density + " gm/cc<br />" + "Weight: " + weightFinal + " gm<br />" + "Volume: " + volumeFinal + " cm3<br />" + "Size: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm"; 
-				}
+			document.getElementById("container2").style.display="block";
+			document.getElementById("densityValue").innerHTML = density;
+			document.getElementById("weightValue").innerHTML = weightFinal;
+			document.getElementById("volumeValue").innerHTML = volumeFinal;
+			document.getElementById("widthValue").innerHTML = widthFinal; 
+			document.getElementById("depthValue").innerHTML = depthFinal;
+			document.getElementById("heightValue").innerHTML = heightFinal;
 
 			var x=250;
 			var y=250;
@@ -1183,6 +1206,7 @@ function init(file)
 			}
 			catch(err)
 			{
+			document.getElementById("container2").style.display="none";
 			if (userLanguage.substring(0,2)=="es")
 				{
 				alert("ERROR: Por favor verifique que el modelo se encuentre en formato STL, OBJ o 3DS.");
@@ -1221,6 +1245,40 @@ function onWindowResize()
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
+function moreDensity(a)
+	{
+	if (document.getElementById("container2").innerHTML!="")
+		{
+		if (a==true)
+			{
+			density = parseFloat(density) + parseFloat("0.01");
+			}
+			else
+			{
+			var result = parseFloat(density) - parseFloat("0.01");
+			if (result>0)
+				{
+				density = result;
+				}
+			}
+
+		density = density.toFixed(2);
+
+		var heightFinal = height / 10;heightFinal = heightFinal.toFixed(2);
+		var widthFinal = width / 10;widthFinal = widthFinal.toFixed(2);
+		var depthFinal = depth / 10;depthFinal = depthFinal.toFixed(2);
+		var volumeFinal = vol / 1000;volumeFinal = volumeFinal.toFixed(2);
+		var weightFinal = volumeFinal * density;weightFinal = weightFinal.toFixed(2);
+
+		document.getElementById("densityValue").innerHTML = density;
+		document.getElementById("weightValue").innerHTML = weightFinal;
+		document.getElementById("volumeValue").innerHTML = volumeFinal;
+		document.getElementById("widthValue").innerHTML = widthFinal; 
+		document.getElementById("depthValue").innerHTML = depthFinal;
+		document.getElementById("heightValue").innerHTML = heightFinal;
+		}
+	}
+
 function runViewer()
 	{
 	var fileInput = document.getElementById("modelOBJ");
@@ -1230,6 +1288,7 @@ function runViewer()
 		}
 		else
 		{
+		document.getElementById("container2").style.display="none";
 		if (userLanguage.substring(0,2)=="es")
 			{
 			alert("ERROR: Debe seleccionar un archivo.");
