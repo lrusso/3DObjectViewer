@@ -1031,7 +1031,7 @@ var userLanguage = window.navigator.userLanguage || window.navigator.language;
 
 var container, camera, scene, renderer, controls, light, vol, mesh, height, heightFinal, width, widthFinal, depth, depthFinal;
 
-var density = parseFloat("1.04");
+var density = parseFloat("1.05");
 
 if (userLanguage.substring(0,2)=="es")
 	{
@@ -1251,11 +1251,15 @@ function moreDensity(a)
 		{
 		if (a==true)
 			{
-			density = parseFloat(density) + parseFloat("0.01");
+			var result = parseFloat(density) + parseFloat("0.05");
+			if (result<=2)
+				{
+				density = result;
+				}
 			}
 			else
 			{
-			var result = parseFloat(density) - parseFloat("0.01");
+			var result = parseFloat(density) - parseFloat("0.05");
 			if (result>0)
 				{
 				density = result;
