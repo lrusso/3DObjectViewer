@@ -1247,40 +1247,37 @@ function onWindowResize()
 
 function moreDensity(a)
 	{
-	if (document.getElementById("container2").innerHTML!="")
+	if (a==true)
 		{
-		if (a==true)
+		var result = parseFloat(density) + parseFloat("0.05");
+		if (result<=2)
 			{
-			var result = parseFloat(density) + parseFloat("0.05");
-			if (result<=2)
-				{
-				density = result;
-				}
+			density = result;
 			}
-			else
-			{
-			var result = parseFloat(density) - parseFloat("0.05");
-			if (result>0)
-				{
-				density = result;
-				}
-			}
-
-		density = density.toFixed(2);
-
-		var heightFinal = height / 10;heightFinal = heightFinal.toFixed(2);
-		var widthFinal = width / 10;widthFinal = widthFinal.toFixed(2);
-		var depthFinal = depth / 10;depthFinal = depthFinal.toFixed(2);
-		var volumeFinal = vol / 1000;volumeFinal = volumeFinal.toFixed(2);
-		var weightFinal = volumeFinal * density;weightFinal = weightFinal.toFixed(2);
-
-		document.getElementById("densityValue").innerHTML = density;
-		document.getElementById("weightValue").innerHTML = weightFinal;
-		document.getElementById("volumeValue").innerHTML = volumeFinal;
-		document.getElementById("widthValue").innerHTML = widthFinal; 
-		document.getElementById("depthValue").innerHTML = depthFinal;
-		document.getElementById("heightValue").innerHTML = heightFinal;
 		}
+		else
+		{
+		var result = parseFloat(density) - parseFloat("0.05");
+		if (result>0)
+			{
+			density = result;
+			}
+		}
+
+	density = density.toFixed(2);
+
+	var heightFinal = height / 10;heightFinal = heightFinal.toFixed(2);
+	var widthFinal = width / 10;widthFinal = widthFinal.toFixed(2);
+	var depthFinal = depth / 10;depthFinal = depthFinal.toFixed(2);
+	var volumeFinal = vol / 1000;volumeFinal = volumeFinal.toFixed(2);
+	var weightFinal = volumeFinal * density;weightFinal = weightFinal.toFixed(2);
+
+	document.getElementById("densityValue").innerHTML = density;
+	document.getElementById("weightValue").innerHTML = weightFinal;
+	document.getElementById("volumeValue").innerHTML = volumeFinal;
+	document.getElementById("widthValue").innerHTML = widthFinal; 
+	document.getElementById("depthValue").innerHTML = depthFinal;
+	document.getElementById("heightValue").innerHTML = heightFinal;
 	}
 
 function runViewer()
