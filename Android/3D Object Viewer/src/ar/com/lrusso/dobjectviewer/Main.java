@@ -4,9 +4,16 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.PopupMenu;
 import android.text.Html;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -33,10 +40,12 @@ public class Main extends ActionBarActivity
 		{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
 		webView = (WebView) findViewById(R.id.webView1);
 		webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
-        webView.loadUrl("file:///android_asset/viewer.html");
+        
+        loadDensityAndWebView();
         
         webView.setWebViewClient(new myWebClient());
         webView.setWebChromeClient(new WebChromeClient()
@@ -107,6 +116,10 @@ public class Main extends ActionBarActivity
 						{
 	    				clickInPrivacy();
 						}
+	    			else if (item.getTitle().toString().contains(getResources().getString(R.string.textChangeDensity)))
+						{
+	    				clickInChangeDensity();
+						}
 	    			else if (item.getTitle().toString().contains(getResources().getString(R.string.textAbout)))
     					{
     					clickInAbout();
@@ -122,7 +135,7 @@ public class Main extends ActionBarActivity
     		}
 		}
 	
-	public void clickInPrivacy()
+	private void clickInPrivacy()
 		{
 		LayoutInflater inflater = LayoutInflater.from(this);
 		View view=inflater.inflate(R.layout.privacy, null);
@@ -137,6 +150,36 @@ public class Main extends ActionBarActivity
 				}
 			});
 		alertDialog.show();
+		}
+	
+	private void clickInChangeDensity()
+		{
+		final String[] densityList = getResources().getStringArray(R.array.densityList);
+		
+		String currentDensityString = getDensity(); 
+		int currentDensityIndex = 0;
+		
+		// KNOWING THE INDEX OF THE CURRENT DENSITY
+		for( int i = 0; i < densityList.length - 1; i++)
+			{
+			if (densityList[i].equals(currentDensityString))
+				{
+				currentDensityIndex = i;
+				}
+			}	
+		
+		new AlertDialog.Builder(this).setTitle(getString(R.string.textChangeDensity))
+									 .setSingleChoiceItems(densityList, currentDensityIndex, null)
+									 .setPositiveButton(R.string.textOK, new DialogInterface.OnClickListener()
+									 	{
+										public void onClick(DialogInterface dialog, int whichButton)
+											{
+											int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+											setDensity(densityList[selectedPosition]);
+											loadDensityAndWebView();
+											}
+									 	})
+        .show();
 		}
 	
 	private void clickInAbout()
@@ -169,5 +212,103 @@ public class Main extends ActionBarActivity
 				{
 				}
 			}).show();
+		}
+	
+	private String getDensity()
+		{
+		String result = "";
+		DataInputStream in = null;
+		try
+    		{
+			in = new DataInputStream(openFileInput("density.cfg"));
+			for (;;)
+        		{
+				result = result + in.readUTF();
+        		}
+    		}
+    		catch (Exception e)
+    		{
+    		}
+		try
+    		{
+			in.close();
+    		}
+    		catch(Exception e)
+    		{
+    		}
+		if (result=="")
+			{
+			result = "1.05";
+			}
+		return result;
+		}
+	
+	public void setDensity(String density)
+		{
+		try
+			{
+			DataOutputStream out = new DataOutputStream(openFileOutput("density.cfg", Context.MODE_PRIVATE));
+			out.writeUTF(density);
+			out.close();
+			}
+	    	catch(Exception e)
+	    	{
+	    	}
+		}
+	
+	private void loadDensityAndWebView()
+		{
+        // LOADING THE HTML DOCUMENT
+		String resultHTML = loadAssetTextAsString("viewer.html");
+            
+		// SETTING THE DENSITY VALUE
+        resultHTML = resultHTML.replace("var density = parseFloat('1.05');", "var density = parseFloat('" + getDensity() + "');");
+            
+        // LOADING THE WEBVIEW
+        webView.loadDataWithBaseURL(null, resultHTML, null, "utf-8", null);
+		}
+	
+	private String loadAssetTextAsString(String name)
+		{
+        BufferedReader in = null;
+        try
+        	{
+            StringBuilder buf = new StringBuilder();
+            InputStream is = getAssets().open(name);
+            in = new BufferedReader(new InputStreamReader(is));
+
+            String str;
+            boolean isFirst = true;
+            while ((str=in.readLine())!=null)
+            	{
+                if (isFirst)
+                	{
+                    isFirst = false;
+                	}
+                	else
+                    {
+                	buf.append("\n");
+                    }
+                buf.append(str);
+            	}
+            return buf.toString();
+        	}
+        	catch (IOException e)
+        	{
+        	}
+        	finally
+        	{
+            if (in!=null)
+            	{
+                try
+                	{
+                    in.close();
+                	}
+                	catch (IOException e)
+                	{
+                	}
+            	}
+        	}
+        return null;
 		}
 	}

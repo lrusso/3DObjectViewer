@@ -1116,7 +1116,8 @@ function init(file)
 			var width = box.max.x - box.min.x;
 			var depth = box.max.y - box.min.y;
 
-			var density = 1.04;
+			var density = parseFloat('1.05');
+			density = density.toFixed(2);
 			var heightFinal = height / 10;heightFinal = heightFinal.toFixed(2);
 			var widthFinal = width / 10;widthFinal = widthFinal.toFixed(2);
 			var depthFinal = depth / 10;depthFinal = depthFinal.toFixed(2);
