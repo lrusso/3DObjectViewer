@@ -1133,15 +1133,7 @@ function init(file)
 				document.getElementById("container2").innerHTML="Density: " + density + " gm/cc<br />" + "Weight: " + weightFinal + " gm<br />" + "Volume: " + volumeFinal + " cm3<br />" + "Size: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm"; 
 				}
 
-			var x=250;
-			var y=250;
-			var division_x=Math.floor(x/10);
-			var division_y=Math.floor(y/10);
 
-			var wirePlane=new THREE.Mesh(new THREE.PlaneGeometry(x,y,division_x,division_y),new THREE.MeshPhongMaterial({emissive:0x707070,color:0x000000,wireframe:true,wireframeLinewidth:1}));
-			wirePlane.receiveShadow=true;
-			wirePlane.position.z = box.min.z - 0.1;
-			scene.add(wirePlane);
 
 			var distance;
 
@@ -1153,8 +1145,18 @@ function init(file)
 				{
 				distance = width * 2;
 				}
-
+			
 			camera.position.set(0, -distance, 0);
+
+			var x = distance + 200;
+			var y = distance + 200;
+			var division_x=Math.floor(x/10);
+			var division_y=Math.floor(y/10);
+
+			var wirePlane=new THREE.Mesh(new THREE.PlaneGeometry(x,y,division_x,division_y),new THREE.MeshPhongMaterial({emissive:0x707070,color:0x000000,wireframe:true,wireframeLinewidth:1}));
+			wirePlane.receiveShadow=true;
+			wirePlane.position.z = box.min.z - 0.1;
+			scene.add(wirePlane);
 
 			// AN ALTERNATIVE FOR MOVING THE OBJECT USING THE MOUSE WITHIN THE RENDERER
 			// controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -1180,7 +1182,7 @@ function init(file)
 	light.position.set(0,0,0);
 	scene.add(light);
 
-	renderer = new THREE.WebGLRenderer({antialias:false});
+	renderer = new THREE.WebGLRenderer({antialias:true});
 	renderer.setSize(window.innerWidth,window.innerHeight);
 	container.appendChild(renderer.domElement);
 
@@ -1209,6 +1211,7 @@ function runViewer()
 	if (fileInput.files[0]!=null)
 		{
 		init(fileInput.files[0]);
+		fileInput.value = null;
 		}
 	}
 </script>

@@ -259,7 +259,7 @@ public class Main extends Activity
 	private void loadDensityAndWebView()
 		{
         // LOADING THE HTML DOCUMENT
-		String resultHTML = loadAssetTextAsString("viewer.html");
+		String resultHTML = loadAssetTextAsString("3DObjectViewer.htm");
             
 		// SETTING THE DENSITY VALUE
         resultHTML = resultHTML.replace("var density = parseFloat('1.05');", "var density = parseFloat('" + getDensity() + "');");
