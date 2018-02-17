@@ -10,7 +10,15 @@
 				<span id="densityLabel"></span>:&nbsp;<span id="densityValue"></span>&nbsp;gm/cc&nbsp;<input type="submit" class="buttonChanger" onclick="moreDensity(true);" value="+"/>&nbsp;<input type="submit" class="buttonChanger" onclick="moreDensity(false);" value="-"/><br />
 				<span id="weightLabel"></span>:&nbsp;<span id="weightValue"></span>&nbsp;gm<br />
 				<span id="volumeLabel"></span>:&nbsp;<span id="volumeValue"></span>&nbsp;cm3<br />
-				<span id="sizeLabel"></span>:&nbsp;<span id="widthValue"></span>x<span id="depthValue"></span>x<span id="heightValue"></span>&nbsp;cm<br />
+				<span id="sizeLabel"></span>:&nbsp;<span id="widthValue"></span>&nbsp;x&nbsp;<span id="depthValue"></span>&nbsp;x&nbsp;<span id="heightValue"></span>&nbsp;cm<br />
+				<hr class="separator"/>
+				<span id="costKilogramLabel"></span>:&nbsp;$<span id="costKilogramValue"></span>&nbsp;<input type="submit" class="buttonChanger" onclick="moreCost(true);" value="+"/>&nbsp;<input type="submit" class="buttonChanger" onclick="moreCost(false);" value="-"/><br />
+				<span id="costLabel"></span>:&nbsp;$<span id="costValue"></span><br />
+				<hr class="separator"/>
+				<span id="diameterLabel"></span>:&nbsp;<span id="diameterValue"></span>&nbsp;mm&nbsp;<input type="submit" class="buttonChanger" onclick="moreDiameter(true);" value="+"/>&nbsp;<input type="submit" class="buttonChanger" onclick="moreDiameter(false);" value="-"/><br />
+				<span id="speedLabel"></span>:&nbsp;<span id="speedValue"></span>&nbsp;mm/s&nbsp;<input type="submit" class="buttonChanger" onclick="moreSpeed(true);" value="+"/>&nbsp;<input type="submit" class="buttonChanger" onclick="moreSpeed(false);" value="-"/><br />
+				<span id="lengthLabel"></span>:&nbsp;<span id="lengthValue"></span>&nbsp;mm<br />
+				<span id="timeLabel"></span>:&nbsp;<span id="hoursValue"></span>&nbsp;<span id="hoursLabel"></span>&nbsp;<span id="minutesValue"></span>&nbsp;<span id="minutesLabel"></span><br />
 			</div>
 			<div class="container3">
 				<div class="leftitem">
@@ -29,6 +37,9 @@
 			var container, camera, scene, renderer, controls, light, vol, mesh, height, heightFinal, width, widthFinal, depth, depthFinal;
 
 			var density = parseFloat("1.05");
+			var filament_cost = parseFloat("200");
+			var filament_diameter = parseFloat("1.75");
+			var printing_speed = parseFloat("150");
 
 			if (userLanguage.substring(0,2)=="es")
 				{
@@ -36,6 +47,14 @@
 				document.getElementById("weightLabel").innerHTML = "Peso";
 				document.getElementById("volumeLabel").innerHTML = "Volumen";
 				document.getElementById("sizeLabel").innerHTML = "Medidas";
+				document.getElementById("costKilogramLabel").innerHTML = "Costo de 1 kilogramo de filamento";
+				document.getElementById("costLabel").innerHTML = "Costo de impresi&oacute;n";
+				document.getElementById("diameterLabel").innerHTML = "Diametro del filamento";
+				document.getElementById("speedLabel").innerHTML = "Velocidad de impresi&oacute;n";
+				document.getElementById("lengthLabel").innerHTML = "Filamento requerido";
+				document.getElementById("timeLabel").innerHTML = "Tiempo de impresi&oacute;n";
+				document.getElementById("hoursLabel").innerHTML = "horas";
+				document.getElementById("minutesLabel").innerHTML = "minutos";
 				document.getElementById("about").innerHTML = "Por LRusso.com - Todos los derechos reservados.";
 				}
 				else
@@ -44,6 +63,14 @@
 				document.getElementById("weightLabel").innerHTML = "Weight";
 				document.getElementById("volumeLabel").innerHTML = "Volume";
 				document.getElementById("sizeLabel").innerHTML = "Size";
+				document.getElementById("costKilogramLabel").innerHTML = "Filament cost per Kilogram";
+				document.getElementById("costLabel").innerHTML = "Printing cost";
+				document.getElementById("diameterLabel").innerHTML = "Filament diameter";
+				document.getElementById("speedLabel").innerHTML = "Printing speed";
+				document.getElementById("lengthLabel").innerHTML = "Filament required";
+				document.getElementById("timeLabel").innerHTML = "Build time";
+				document.getElementById("hoursLabel").innerHTML = "hours";
+				document.getElementById("minutesLabel").innerHTML = "minutes";
 				document.getElementById("about").innerHTML = "By LRusso.com - All rights reserved.";
 				}
 
@@ -163,6 +190,20 @@
 						var volumeFinal = vol / 1000;volumeFinal = volumeFinal.toFixed(2);
 						var weightFinal = volumeFinal * density;weightFinal = weightFinal.toFixed(2);
 
+						var filament_length = parseFloat(( vol / ( filament_diameter / 2 ) ^ 2 / Math.PI ) * 2 / 10).toFixed(2);
+						filament_length = parseFloat(filament_length).toFixed(0);
+
+						var hours = Math.floor((filament_length / printing_speed) / 60);
+						hours = parseFloat(hours).toFixed(0);
+
+						var minutes = (filament_length / printing_speed) % 60;
+						minutes = parseFloat(minutes).toFixed(0);
+
+						if (minutes==0){minutes=1;}
+
+						var finalCost = weightFinal * 100 / filament_cost;
+						finalCost = parseFloat(finalCost).toFixed(2);
+
 						document.getElementById("container2").style.display="block";
 						document.getElementById("densityValue").innerHTML = density;
 						document.getElementById("weightValue").innerHTML = weightFinal;
@@ -170,6 +211,13 @@
 						document.getElementById("widthValue").innerHTML = widthFinal; 
 						document.getElementById("depthValue").innerHTML = depthFinal;
 						document.getElementById("heightValue").innerHTML = heightFinal;
+						document.getElementById("costKilogramValue").innerHTML = filament_cost;
+						document.getElementById("costValue").innerHTML = finalCost;
+						document.getElementById("diameterValue").innerHTML = filament_diameter;
+						document.getElementById("speedValue").innerHTML = printing_speed;
+						document.getElementById("lengthValue").innerHTML = filament_length;
+						document.getElementById("hoursValue").innerHTML = hours;
+						document.getElementById("minutesValue").innerHTML = minutes;
 
 						var distance;
 
@@ -244,9 +292,10 @@
 
 			function moreDensity(a)
 				{
+				var result;
 				if (a==true)
 					{
-					var result = parseFloat(density) + parseFloat("0.05");
+					result = parseFloat(density) + parseFloat("0.05");
 					if (result<=2)
 						{
 						density = result;
@@ -254,14 +303,14 @@
 					}
 					else
 					{
-					var result = parseFloat(density) - parseFloat("0.05");
+					result = parseFloat(density) - parseFloat("0.05");
 					if (result>0)
 						{
 						density = result;
 						}
 					}
 
-				density = density.toFixed(2);
+				density = parseFloat(density).toFixed(2);
 
 				var heightFinal = height / 10;heightFinal = heightFinal.toFixed(2);
 				var widthFinal = width / 10;widthFinal = widthFinal.toFixed(2);
@@ -275,6 +324,114 @@
 				document.getElementById("widthValue").innerHTML = widthFinal; 
 				document.getElementById("depthValue").innerHTML = depthFinal;
 				document.getElementById("heightValue").innerHTML = heightFinal;
+				updateCost();
+				}
+
+			function moreCost(a)
+				{
+				var result;
+				if (a==true)
+					{
+					result = parseFloat(filament_cost) + parseFloat("10");
+					if (result<=10000)
+						{
+						filament_cost = result;
+						}
+					}
+					else
+					{
+					result = parseFloat(filament_cost) - parseFloat("10");
+					if (result>0)
+						{
+						filament_cost = result;
+						}
+					}
+				document.getElementById("costKilogramValue").innerHTML = filament_cost;
+
+				updateCost();
+				}
+
+			function updateCost()
+				{
+				var volumeFinal = vol / 1000;volumeFinal = volumeFinal.toFixed(2);
+				var weightFinal = volumeFinal * density;weightFinal = weightFinal.toFixed(2);
+				var finalCost = weightFinal * 100 / filament_cost;
+				finalCost = parseFloat(finalCost).toFixed(2);
+				document.getElementById("costValue").innerHTML = finalCost;
+				}
+
+			function moreDiameter(a)
+				{
+				var result;
+				if (a==true)
+					{
+					result = parseFloat(filament_diameter) + parseFloat("0.05");
+					if (result<=5)
+						{
+						filament_diameter = result;
+						}
+					}
+					else
+					{
+					result = parseFloat(filament_diameter) - parseFloat("0.05");
+					if (result>0)
+						{
+						filament_diameter = result;
+						}
+					}
+
+				filament_diameter = parseFloat(filament_diameter).toFixed(2);
+
+				var filament_length = parseFloat(( vol / ( filament_diameter / 2 ) ^ 2 / Math.PI ) * 2 / 10).toFixed(2);
+				filament_length = parseFloat(filament_length).toFixed(0);
+
+				var hours = Math.floor((filament_length / printing_speed) / 60);
+				hours = parseFloat(hours).toFixed(0);
+
+				var minutes = (filament_length / printing_speed) % 60;
+				minutes = parseFloat(minutes).toFixed(0);
+
+				if (minutes==0){minutes=1;}
+
+				document.getElementById("diameterValue").innerHTML = filament_diameter;
+				document.getElementById("lengthValue").innerHTML = filament_length;
+				document.getElementById("hoursValue").innerHTML = hours;
+				document.getElementById("minutesValue").innerHTML = minutes;
+				}
+
+			function moreSpeed(a)
+				{
+				var result;
+				if (a==true)
+					{
+					result = parseFloat(printing_speed) + parseFloat("25");
+					if (result<=1000)
+						{
+						printing_speed = result;
+						}
+					}
+					else
+					{
+					result = parseFloat(printing_speed) - parseFloat("25");
+					if (result>0)
+						{
+						printing_speed = result;
+						}
+					}
+
+				printing_speed = parseFloat(printing_speed).toFixed(0);
+
+				var filament_length = parseFloat(( vol / ( filament_diameter / 2 ) ^ 2 / Math.PI ) * 2 / 10).toFixed(2);
+
+				var hours = Math.floor((filament_length / printing_speed) / 60);
+				hours = parseFloat(hours).toFixed(0);
+
+				var minutes = (filament_length / printing_speed) % 60;
+				minutes = parseFloat(minutes).toFixed(0);
+
+				document.getElementById("speedValue").innerHTML = printing_speed;
+				document.getElementById("hoursValue").innerHTML = hours;
+				document.getElementById("minutesValue").innerHTML = minutes;
 				}
 
 			function runViewer()

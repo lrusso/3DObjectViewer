@@ -4,6 +4,9 @@ body
 	overflow:hidden;
 	margin:0;
 	padding:0;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	user-select:none;
 	}
 .content
 	{
@@ -81,6 +84,12 @@ body
 	line-height:13px;
 	color:black;
 	text-align:left;
+	}
+.separator
+	{
+	background-color:white;
+	height:1px;
+	border:0;
 	}
 #modelOBJ
 	{
