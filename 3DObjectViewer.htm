@@ -201,7 +201,7 @@
 
 						if (minutes==0){minutes=1;}
 
-						var finalCost = weightFinal * 100 / filament_cost;
+						var finalCost = weightFinal * filament_cost / 1000;
 						finalCost = parseFloat(finalCost).toFixed(2);
 
 						document.getElementById("container2").style.display="block";
@@ -355,7 +355,7 @@
 				{
 				var volumeFinal = vol / 1000;volumeFinal = volumeFinal.toFixed(2);
 				var weightFinal = volumeFinal * density;weightFinal = weightFinal.toFixed(2);
-				var finalCost = weightFinal * 100 / filament_cost;
+				var finalCost = weightFinal * filament_cost / 1000;
 				finalCost = parseFloat(finalCost).toFixed(2);
 				document.getElementById("costValue").innerHTML = finalCost;
 				}
