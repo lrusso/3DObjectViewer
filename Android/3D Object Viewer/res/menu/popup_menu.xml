@@ -2,5 +2,8 @@
     xmlns:ar.com.lrusso.dobjectviewer="http://schemas.android.com/apk/res-auto">
 	<item android:id="@+id/privacy" android:title="@string/textPrivacy"/>  
 	<item android:id="@+id/density" android:title="@string/textChangeDensity"/>  
+	<item android:id="@+id/speed" android:title="@string/textChangeSpeed"/>  
+	<item android:id="@+id/diameter" android:title="@string/textChangeDiameter"/>  
+	<item android:id="@+id/cost" android:title="@string/textChangeCost"/>  
 	<item android:id="@+id/about" android:title="@string/textAbout"/>  
 </menu>  

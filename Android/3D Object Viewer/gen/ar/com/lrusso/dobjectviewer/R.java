@@ -10,6 +10,8 @@ package ar.com.lrusso.dobjectviewer;
 public final class R {
     public static final class array {
         public static final int densityList=0x7f050000;
+        public static final int diameterList=0x7f050001;
+        public static final int speedList=0x7f050002;
     }
     public static final class attr {
     }
@@ -18,10 +20,13 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int about=0x7f070004;
+        public static final int about=0x7f070007;
         public static final int action_settings=0x7f070001;
+        public static final int cost=0x7f070006;
         public static final int density=0x7f070003;
+        public static final int diameter=0x7f070005;
         public static final int privacy=0x7f070002;
+        public static final int speed=0x7f070004;
         public static final int webView1=0x7f070000;
     }
     public static final class layout {
@@ -38,9 +43,14 @@ public final class R {
         public static final int hello_world=0x7f040001;
         public static final int textAbout=0x7f040003;
         public static final int textAboutMessage=0x7f040004;
+        public static final int textChangeCost=0x7f040009;
         public static final int textChangeDensity=0x7f040006;
+        public static final int textChangeDiameter=0x7f040008;
+        public static final int textChangeSpeed=0x7f040007;
+        public static final int textError=0x7f04000a;
+        public static final int textInvalidNumber=0x7f04000b;
         public static final int textOK=0x7f040005;
-        public static final int textPrivacy=0x7f040007;
-        public static final int textPrivacyText=0x7f040008;
+        public static final int textPrivacy=0x7f04000c;
+        public static final int textPrivacyText=0x7f04000d;
     }
 }

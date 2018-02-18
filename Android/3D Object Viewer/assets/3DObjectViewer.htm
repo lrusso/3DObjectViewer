@@ -9,6 +9,9 @@ body
 	overflow:hidden;
 	margin:0;
 	padding:0;
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	user-select:none;
 	}
 .content
 	{
@@ -73,11 +76,11 @@ body
 	color:black;
 	text-align:left;
 	border:0 silver solid;
+	outline:none;
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
-	box-sizing:border-box;		
+	box-sizing:border-box;
 	}
-
 </style>
 
 <div class='content'>
@@ -1117,23 +1120,46 @@ function init(file)
 			var depth = box.max.y - box.min.y;
 
 			var density = parseFloat('1.05');
-			density = density.toFixed(2);
+			var filament_cost = parseFloat('200');
+			var filament_diameter = parseFloat('1.75');
+			var printing_speed = parseFloat('150');
+
 			var heightFinal = height / 10;heightFinal = heightFinal.toFixed(2);
 			var widthFinal = width / 10;widthFinal = widthFinal.toFixed(2);
 			var depthFinal = depth / 10;depthFinal = depthFinal.toFixed(2);
 			var volumeFinal = vol / 1000;volumeFinal = volumeFinal.toFixed(2);
 			var weightFinal = volumeFinal * density;weightFinal = weightFinal.toFixed(2);
 
+			var filament_length = parseFloat(( vol / ( filament_diameter / 2 ) ^ 2 / Math.PI ) * 2 / 10).toFixed(2);
+			filament_length = parseFloat(filament_length).toFixed(0);
+
+			var hours = Math.floor((filament_length / printing_speed) / 60);
+			hours = parseFloat(hours).toFixed(0);
+
+			var minutes = (filament_length / printing_speed) % 60;
+			minutes = parseFloat(minutes).toFixed(0);
+
+			if (minutes==0){minutes=1;}
+
+			var finalCost = weightFinal * filament_cost / 1000;
+			finalCost = parseFloat(finalCost).toFixed(2);
+
 			if (userLanguage.substring(0,2)=="es")
 				{
-				document.getElementById("container2").innerHTML="Densidad: " + density + " gm/cc<br />" + "Peso: " + weightFinal + " gm<br />" + "Volumen: " + volumeFinal + " cm3<br />" + "Medidas: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm"; 
+				document.getElementById("container2").innerHTML = "Tiempo de impresi&oacute;n: " + hours + " horas " + minutes + " minutos<br />" + 
+																  "Medidas: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm<br />" +
+																  "Volumen: " + volumeFinal + " cm3<br />" +
+																  "Peso: " + weightFinal + " gm<br />" +
+																  "Costo: $" + finalCost;
 				}
 				else
 				{
-				document.getElementById("container2").innerHTML="Density: " + density + " gm/cc<br />" + "Weight: " + weightFinal + " gm<br />" + "Volume: " + volumeFinal + " cm3<br />" + "Size: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm"; 
+				document.getElementById("container2").innerHTML = "Build time: " + hours + " horas " + minutes + " minutos<br />" + 
+																  "Size: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm<br />" +
+																  "Volume: " + volumeFinal + " cm3<br />" +
+																  "Weight: " + weightFinal + " gm<br />" +
+																  "Cost: $" + finalCost;
 				}
-
-
 
 			var distance;
 
