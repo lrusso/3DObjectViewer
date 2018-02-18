@@ -100,6 +100,7 @@ body
 	color:black;
 	text-align:left;
 	border:0 silver solid;
+	outline:none;
 	-webkit-box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	box-sizing:border-box;
