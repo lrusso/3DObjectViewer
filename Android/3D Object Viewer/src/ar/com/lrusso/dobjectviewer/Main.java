@@ -1,6 +1,7 @@
 package ar.com.lrusso.dobjectviewer;
 
 import android.text.Html;
+import android.text.InputType;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -32,7 +33,6 @@ import android.widget.TextView;
 
 public class Main extends Activity
 	{
-	private Context context;
 	private WebView webView;
 	private ValueCallback<Uri> mUploadMessage;  
 	private final static int FILECHOOSER_RESULTCODE=1;
@@ -41,9 +41,7 @@ public class Main extends Activity
 		{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
-		context = this;
-		
+
 		webView = (WebView) findViewById(R.id.webView1);
 		webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
@@ -262,6 +260,7 @@ public class Main extends Activity
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		
 		final EditText edittext = new EditText(this);
+		edittext.setInputType(InputType.TYPE_CLASS_NUMBER);
 		edittext.setText(getCost());
 		
 		alert.setTitle(getResources().getString(R.string.textChangeCost));
@@ -278,17 +277,12 @@ public class Main extends Activity
 		        	{
 		        	if (isNumeric(value)==true)
 		        		{
-		        		setCost(value);
-				 		loadConfigsAndWebView();
-		        		}
-		        		else
-		        		{
-		        		new AlertDialog.Builder(context).setTitle(getResources().getString(R.string.textError)).setMessage(getResources().getString(R.string.textInvalidNumber)).setPositiveButton(getResources().getString(R.string.textOK),new DialogInterface.OnClickListener()
+		        		if (Double.valueOf(value)>0)
 		        			{
-		        			public void onClick(DialogInterface dialog,int which)
-		        				{
-		        				}
-		        			}).show();
+		        			value = value.replaceFirst("^0+(?!$)", "");
+			        		setCost(value);
+					 		loadConfigsAndWebView();
+		        			}
 		        		}
 		        	}
 		    	}

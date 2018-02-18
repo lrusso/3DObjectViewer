@@ -47,10 +47,8 @@ public final class R {
         public static final int textChangeDensity=0x7f040006;
         public static final int textChangeDiameter=0x7f040008;
         public static final int textChangeSpeed=0x7f040007;
-        public static final int textError=0x7f04000a;
-        public static final int textInvalidNumber=0x7f04000b;
         public static final int textOK=0x7f040005;
-        public static final int textPrivacy=0x7f04000c;
-        public static final int textPrivacyText=0x7f04000d;
+        public static final int textPrivacy=0x7f04000a;
+        public static final int textPrivacyText=0x7f04000b;
     }
 }
