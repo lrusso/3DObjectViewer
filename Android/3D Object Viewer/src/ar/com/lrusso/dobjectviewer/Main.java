@@ -1,7 +1,9 @@
 package ar.com.lrusso.dobjectviewer;
 
 import android.text.Html;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -9,6 +11,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -36,7 +39,8 @@ public class Main extends Activity
 	private WebView webView;
 	private ValueCallback<Uri> mUploadMessage;  
 	private final static int FILECHOOSER_RESULTCODE=1;
-	
+	public static DecimalFormat numberFormat = new DecimalFormat("0.00");
+
 	@Override protected void onCreate(Bundle savedInstanceState)
 		{
 		super.onCreate(savedInstanceState);
@@ -167,92 +171,112 @@ public class Main extends Activity
 	
 	private void clickInChangeDensity()
 		{
-		final String[] densityList = getResources().getStringArray(R.array.densityList);
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		
-		String currentDensityString = getDensity(); 
-		int currentDensityIndex = 0;
+		final EditText edittext = new EditText(this);
+		edittext.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+		edittext.setText(String.valueOf(numberFormat.format(Double.valueOf(getDensity()))));
+		edittext.setFilters(new InputFilter[] {new InputFilter.LengthFilter(5),new DecimalDigitsInputFilter(2)});
 		
-		// KNOWING THE INDEX OF THE CURRENT DENSITY
-		for(int i = 0; i < densityList.length - 1; i++)
+		alert.setTitle(getResources().getString(R.string.textChangeDensity));
+
+		alert.setView(edittext);
+
+		alert.setPositiveButton(getResources().getString(R.string.textOK), new DialogInterface.OnClickListener()
 			{
-			if (densityList[i].equals(currentDensityString))
-				{
-				currentDensityIndex = i;
-				}
-			}
-		
-		new AlertDialog.Builder(this).setTitle(getString(R.string.textChangeDensity))
-									 .setSingleChoiceItems(densityList, currentDensityIndex, null)
-									 .setPositiveButton(R.string.textOK, new DialogInterface.OnClickListener()
-									 	{
-										public void onClick(DialogInterface dialog, int whichButton)
-											{
-											int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-											setDensity(densityList[selectedPosition]);
-											loadConfigsAndWebView();
-											}
-									 	})
-        .show();
+		    public void onClick(DialogInterface dialog, int whichButton)
+		    	{
+		        String value = edittext.getText().toString();
+		        value = value.trim();
+		        if (value.length()>0)
+		        	{
+		        	if (isNumeric(value)==true)
+		        		{
+		        		if (Double.valueOf(value)>0)
+		        			{
+		        			value = value.replaceFirst("^0+(?!$)", "");
+			        		setDensity(String.valueOf(Double.valueOf(value)));
+					 		loadConfigsAndWebView();
+		        			}
+		        		}
+		        	}
+		    	}
+			});
+
+		alert.show();
 		}
 
 	private void clickInChangeSpeed()
 		{
-		final String[] speedList = getResources().getStringArray(R.array.speedList);
-	
-		String currentSpeedString = getSpeed(); 
-		int currentSpeedIndex = 0;
-	
-		// KNOWING THE INDEX OF THE CURRENT PRINTING SPEED
-		for(int i = 0; i < speedList.length - 1; i++)
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		
+		final EditText edittext = new EditText(this);
+		edittext.setInputType(InputType.TYPE_CLASS_NUMBER);
+		edittext.setText(getSpeed());
+		
+		alert.setTitle(getResources().getString(R.string.textChangeSpeed));
+
+		alert.setView(edittext);
+
+		alert.setPositiveButton(getResources().getString(R.string.textOK), new DialogInterface.OnClickListener()
 			{
-			if (speedList[i].equals(currentSpeedString))
-				{
-				currentSpeedIndex = i;
-				}
-			}
-	
-		new AlertDialog.Builder(this).setTitle(getString(R.string.textChangeSpeed))
-									 .setSingleChoiceItems(speedList, currentSpeedIndex, null)
-									 .setPositiveButton(R.string.textOK, new DialogInterface.OnClickListener()
-									 	{
-										public void onClick(DialogInterface dialog, int whichButton)
-											{
-											int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-											setSpeed(speedList[selectedPosition]);
-											loadConfigsAndWebView();
-											}
-									 	})
-		.show();
+		    public void onClick(DialogInterface dialog, int whichButton)
+		    	{
+		        String value = edittext.getText().toString();
+		        value = value.trim();
+		        if (value.length()>0)
+		        	{
+		        	if (isNumeric(value)==true)
+		        		{
+		        		if (Double.valueOf(value)>0)
+		        			{
+		        			value = value.replaceFirst("^0+(?!$)", "");
+			        		setSpeed(value);
+					 		loadConfigsAndWebView();
+		        			}
+		        		}
+		        	}
+		    	}
+			});
+
+		alert.show();
 		}
 
 	private void clickInChangeDiameter()
 		{
-		final String[] diameterList = getResources().getStringArray(R.array.diameterList);
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+		
+		final EditText edittext = new EditText(this);
+		edittext.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+		edittext.setText(String.valueOf(numberFormat.format(Double.valueOf(getDiameter()))));
+		edittext.setFilters(new InputFilter[] {new InputFilter.LengthFilter(5),new DecimalDigitsInputFilter(2)});
+		
+		alert.setTitle(getResources().getString(R.string.textChangeDiameter));
 
-		String currentDiameterString = getDiameter(); 
-		int currentDiameterIndex = 0;
+		alert.setView(edittext);
 
-		// KNOWING THE INDEX OF THE CURRENT FILAMENT DIAMETER
-		for(int i = 0; i < diameterList.length - 1; i++)
+		alert.setPositiveButton(getResources().getString(R.string.textOK), new DialogInterface.OnClickListener()
 			{
-			if (diameterList[i].equals(currentDiameterString))
-				{
-				currentDiameterIndex = i;
-				}
-			}
+		    public void onClick(DialogInterface dialog, int whichButton)
+		    	{
+		        String value = edittext.getText().toString();
+		        value = value.trim();
+		        if (value.length()>0)
+		        	{
+		        	if (isNumeric(value)==true)
+		        		{
+		        		if (Double.valueOf(value)>0)
+		        			{
+		        			value = value.replaceFirst("^0+(?!$)", "");
+			        		setDiameter(String.valueOf(Double.valueOf(value)));
+					 		loadConfigsAndWebView();
+		        			}
+		        		}
+		        	}
+		    	}
+			});
 
-		new AlertDialog.Builder(this).setTitle(getString(R.string.textChangeDiameter))
-									 .setSingleChoiceItems(diameterList, currentDiameterIndex, null)
-									 .setPositiveButton(R.string.textOK, new DialogInterface.OnClickListener()
-								 		{
-										 	public void onClick(DialogInterface dialog, int whichButton)
-										 	{
-									 		int selectedPosition = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-									 		setDiameter(diameterList[selectedPosition]);
-									 		loadConfigsAndWebView();
-										 	}
-								 		})
-		.show();
+		alert.show();		
 		}
 	
 	private void clickInChangeCost()
@@ -567,5 +591,57 @@ public class Main extends Activity
             	}
         	}
         return null;
+		}
+	
+	private class DecimalDigitsInputFilter implements InputFilter
+		{
+
+		  private final int decimalDigits;
+
+		  /**
+		   * Constructor.
+		   * 
+		   * @param decimalDigits maximum decimal digits
+		   */
+		  public DecimalDigitsInputFilter(int decimalDigits) {
+		    this.decimalDigits = decimalDigits;
+		  }
+
+		  @Override
+		  public CharSequence filter(CharSequence source,
+		      int start,
+		      int end,
+		      Spanned dest,
+		      int dstart,
+		      int dend) {
+
+
+		    int dotPos = -1;
+		    int len = dest.length();
+		    for (int i = 0; i < len; i++) {
+		      char c = dest.charAt(i);
+		      if (c == '.' || c == ',') {
+		        dotPos = i;
+		        break;
+		      }
+		    }
+		    if (dotPos >= 0) {
+
+		      // protects against many dots
+		      if (source.equals(".") || source.equals(","))
+		      {
+		          return "";
+		      }
+		      // if the text is entered before the dot
+		      if (dend <= dotPos) {
+		        return null;
+		      }
+		      if (len - dotPos > decimalDigits) {
+		        return "";
+		      }
+		    }
+
+		    return null;
+		  }
 		}
 	}

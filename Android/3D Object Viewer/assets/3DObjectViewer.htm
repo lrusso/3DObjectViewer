@@ -1147,7 +1147,7 @@ function init(file)
 			if (userLanguage.substring(0,2)=="es")
 				{
 				document.getElementById("container2").innerHTML = "Tiempo de impresi&oacute;n: " + hours + " horas " + minutes + " minutos<br />" + 
-																  "Medidas: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm<br />" +
+																  "Medidas: " + widthFinal + " x " + heightFinal + " x " + depthFinal + " cm<br />" +
 																  "Volumen: " + volumeFinal + " cm3<br />" +
 																  "Peso: " + weightFinal + " g<br />" +
 																  "Costo: $" + finalCost;
@@ -1155,7 +1155,7 @@ function init(file)
 				else
 				{
 				document.getElementById("container2").innerHTML = "Build time: " + hours + " hours " + minutes + " minutes<br />" + 
-																  "Size: " + widthFinal + " x " + depthFinal + " x " + heightFinal + " cm<br />" +
+																  "Size: " + widthFinal + " x " + heightFinal + " x " + depthFinal + " cm<br />" +
 																  "Volume: " + volumeFinal + " cm3<br />" +
 																  "Weight: " + weightFinal + " g<br />" +
 																  "Cost: $" + finalCost;
@@ -1163,13 +1163,21 @@ function init(file)
 
 			var distance;
 
-			if (height>width)
+			if (height>width && height>depth)
 				{
 				distance = height * 2;
 				}
-				else
+			else if (width>height && width>depth)
 				{
 				distance = width * 2;
+				}
+			else if (depth>height && depth>width)
+				{
+				distance = depth * 2;
+				}
+				else
+				{
+				distance = depth * 4;
 				}
 			
 			camera.position.set(0, -distance, 0);
