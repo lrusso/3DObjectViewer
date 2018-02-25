@@ -10,7 +10,7 @@
 				<span id="densityLabel"></span>:&nbsp;<span id="densityValue"></span>&nbsp;g/cc&nbsp;<input type="submit" class="buttonChanger" onclick="moreDensity(true);" value="+"/>&nbsp;<input type="submit" class="buttonChanger" onclick="moreDensity(false);" value="-"/><br />
 				<span id="weightLabel"></span>:&nbsp;<span id="weightValue"></span>&nbsp;g<br />
 				<span id="volumeLabel"></span>:&nbsp;<span id="volumeValue"></span>&nbsp;cm3<br />
-				<span id="sizeLabel"></span>:&nbsp;<span id="widthValue"></span>&nbsp;x&nbsp;<span id="depthValue"></span>&nbsp;x&nbsp;<span id="heightValue"></span>&nbsp;cm<br />
+				<span id="sizeLabel"></span>:&nbsp;<span id="widthValue"></span>&nbsp;x&nbsp;<span id="heightValue"></span>&nbsp;x&nbsp;<span id="depthValue"></span>&nbsp;cm<br />
 				<hr class="separator"/>
 				<span id="costKilogramLabel"></span>:&nbsp;$<span id="costKilogramValue"></span>&nbsp;<input type="submit" class="buttonChanger" onclick="moreCost(true);" value="+"/>&nbsp;<input type="submit" class="buttonChanger" onclick="moreCost(false);" value="-"/><br />
 				<span id="costLabel"></span>:&nbsp;$<span id="costValue"></span><br />
@@ -221,13 +221,21 @@
 
 						var distance;
 
-						if (height>width)
+						if (height>width && height>depth)
 							{
 							distance = height * 2;
 							}
-							else
+						else if (width>height && width>depth)
 							{
 							distance = width * 2;
+							}
+						else if (depth>height && depth>width)
+							{
+							distance = depth * 2;
+							}
+						else
+							{
+							distance = depth * 4;
 							}
 
 						camera.position.set(0, -distance, 0);
