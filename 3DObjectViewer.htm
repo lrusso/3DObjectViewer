@@ -93,6 +93,8 @@
 				var extension = filename.split(".").pop().toLowerCase();
 				var reader = new FileReader();
 
+				document.getElementById("container2").style.display="none";
+
 				if (extension=="stl")
 					{
 					reader.readAsArrayBuffer(file);
