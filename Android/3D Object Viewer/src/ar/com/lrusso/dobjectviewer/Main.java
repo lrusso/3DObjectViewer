@@ -41,8 +41,8 @@ import android.widget.TextView;
 public class Main extends Activity
 	{
 	private WebView webView;
-	private ValueCallback<Uri> mUploadMessage;  
-	private ValueCallback<Uri[]> mUploadMessage5;
+	private static ValueCallback<Uri> mUploadMessage;  
+	private static ValueCallback<Uri[]> mUploadMessage5;
 	private final static int FILECHOOSER_RESULTCODE=1;
 	public static DecimalFormat numberFormat = new DecimalFormat("0.00");
 
@@ -116,19 +116,21 @@ public class Main extends Activity
 
 	 @Override protected void onActivityResult(int requestCode, int resultCode, Intent intent)
 	 	{  
+		if (resultCode == RESULT_OK)
+			{
 			if(requestCode==FILECHOOSER_RESULTCODE)  
-			{  
-	        if (android.os.Build.VERSION.SDK_INT>=21) //LOLLIPOP
-	        	{
-	        	try
+				{  
+				if (android.os.Build.VERSION.SDK_INT>=21) //LOLLIPOP
 	        		{
-		       		if (null == mUploadMessage5) return;
-		       		Uri result = intent == null || resultCode != RESULT_OK ? null : intent.getData();  
-		       		mUploadMessage5.onReceiveValue(new Uri[]{result});  
-		       		mUploadMessage5 = null;  
-	        		}
-	        		catch(Exception e)
-	        		{
+					try
+	        			{
+						Uri result = intent == null || resultCode != RESULT_OK ? null : intent.getData();
+						mUploadMessage5.onReceiveValue(new Uri[]{result});  
+						mUploadMessage5 = null;  
+	        			}
+	        			catch(Exception e)
+	        			{
+	        			}
 	        		}
 	        	}
 	        	else
@@ -145,6 +147,26 @@ public class Main extends Activity
 	        		}
 	        	}
 	        }
+			else
+			{
+			try
+				{
+				if (mUploadMessage5 != null)
+					{
+					mUploadMessage5.onReceiveValue(null);
+					mUploadMessage5 = null;
+					}
+
+				if (mUploadMessage != null)
+					{
+					mUploadMessage.onReceiveValue(null);
+					mUploadMessage = null;
+					}
+				}
+				catch(Exception e)
+				{
+				}
+			}
 	 	}
 	
 	@Override public boolean onCreateOptionsMenu(Menu menu)
