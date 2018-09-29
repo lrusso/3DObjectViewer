@@ -69,14 +69,6 @@ body
 	float:left;
 	margin-left:2px;
 	}
-.rightitem
-	{
-	float:right;
-	font-size:13px;
-	line-height:30px;
-	height:30px;
-	cursor:default;
-	}
 .buttonChanger
 	{
 	font-size:13px;

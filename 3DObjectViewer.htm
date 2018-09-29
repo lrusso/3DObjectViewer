@@ -24,7 +24,6 @@
 				<div class="leftitem">
 					<input type="file" id="modelOBJ" onChange="runViewer();" disabled>
 				</div>
-				<div class="rightitem" id="about"></div>
 			</div>
 		</div>
 
@@ -55,7 +54,6 @@
 				document.getElementById("timeLabel").innerHTML = "Tiempo de impresi&oacute;n";
 				document.getElementById("hoursLabel").innerHTML = "horas";
 				document.getElementById("minutesLabel").innerHTML = "minutos";
-				document.getElementById("about").innerHTML = "Por LRusso.com - Todos los derechos reservados.";
 				}
 				else
 				{
@@ -71,7 +69,6 @@
 				document.getElementById("timeLabel").innerHTML = "Build time";
 				document.getElementById("hoursLabel").innerHTML = "hours";
 				document.getElementById("minutesLabel").innerHTML = "minutes";
-				document.getElementById("about").innerHTML = "By LRusso.com - All rights reserved.";
 				}
 
 			function init(file)
@@ -277,7 +274,7 @@
 				light.position.set(0,0,0);
 				scene.add(light);
 
-				renderer = new THREE.WebGLRenderer({antialias:true});
+				renderer = new THREE.WebGLRenderer({antialias:false});
 				renderer.setSize(window.innerWidth,window.innerHeight);
 				container.appendChild(renderer.domElement);
 
