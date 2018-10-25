@@ -1,5 +1,6 @@
 body
 	{
+	background-color:#303030;
 	text-align:center;
 	overflow:hidden;
 	margin:0;
@@ -12,7 +13,6 @@ body
 	{
 	width:100%;
 	height:100%;
-	position:fixed;
 	left:0;
 	right:0;
 	top:0;
@@ -25,10 +25,8 @@ body
 	}
 #container
 	{
-	position:absolute;
 	width:100%;
 	height:100%;
-	background-color:#303030;
 	overflow:hidden;
 	}
 #container2
