@@ -605,16 +605,16 @@ public class Main extends Activity
 		String resultHTML = loadAssetTextAsString("3DObjectViewer.htm");
             
 		// SETTING THE DENSITY VALUE
-        resultHTML = resultHTML.replace("var density = parseFloat('1.05');", "var density = parseFloat('" + getDensity() + "');");
+        resultHTML = resultHTML.replace("var density = parseFloat(\"1.05\");", "var density = parseFloat(\"" + getDensity() + "\");");
 
 		// SETTING THE COST VALUE
-        resultHTML = resultHTML.replace("var filament_cost = parseFloat('200');", "var filament_cost = parseFloat('" + getCost() + "');");
+        resultHTML = resultHTML.replace("var filament_cost = parseFloat(\"200\");", "var filament_cost = parseFloat(\"" + getCost() + "\");");
 
         // SETTING THE FILAMENT DIAMETER VALUE
-        resultHTML = resultHTML.replace("var filament_diameter = parseFloat('1.75');", "var filament_diameter = parseFloat('" + getDiameter() + "');");
+        resultHTML = resultHTML.replace("var filament_diameter = parseFloat(\"1.75\");", "var filament_diameter = parseFloat(\"" + getDiameter() + "\");");
 
 		// SETTING THE PRINTING SPEED VALUE
-        resultHTML = resultHTML.replace("var printing_speed = parseFloat('150');", "var printing_speed = parseFloat('" + getSpeed() + "');");
+        resultHTML = resultHTML.replace("var printing_speed = parseFloat(\"150\");", "var printing_speed = parseFloat(\"" + getSpeed() + "\");");
 
         // LOADING THE WEBVIEW
         webView.loadDataWithBaseURL(null, resultHTML, null, "utf-8", null);

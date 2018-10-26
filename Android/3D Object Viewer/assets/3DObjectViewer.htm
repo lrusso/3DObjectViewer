@@ -1,99 +1,101 @@
-<html>
-<head>
-</head>
-<body>
-<style>
-body
-	{
-	text-align:center;
-	overflow:hidden;
-	margin:0;
-	padding:0;
-	-webkit-user-select:none;
-	-moz-user-select:none;
-	user-select:none;
-	}
-.content
-	{
-	width:100%;
-	height:100%;
-	background-color:silver;
-	position:fixed;
-	left:0;
-	right:0;
-	top:0;
-	bottom:0;
-	margin:auto;
-	max-width:100%;
-	max-height:100%;
-	overflow:hidden;
-	text-align:center;
-	}
-#container
-	{
-	position:absolute;
-	width:100%;
-	height:100%;
-	background-color:#303030;
-	overflow:hidden;
-	}
-#container2
-	{
-	position:absolute;
-	text-align:left;
-	font-family:Arial;
-	font-size:15px;
-	color:white;
-	text-shadow:0 0 1px #000000,0 0 5px #000000;
-	left:5px;
-	top:8px;
-	margin-left:5px;
-	z-index:999;
-	cursor:default;
-	}
-.container3
-	{
-	position:absolute;
-	bottom:0px;
-	left:0px;
-	right:0px;
-	float:left;
-	background-color:#F2F2F2;
-	font-family:Arial;
-	font-size:15px;
-	line-height:15px;
-	height:25px;
-	z-index:999;
-	}
-.leftitem
-	{
-	float:left;
-	}
-#modelOBJ
-	{
-	font-size:15px;
-	line-height:15px;
-	color:black;
-	text-align:left;
-	border:0 silver solid;
-	outline:none;
-	-webkit-box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	box-sizing:border-box;
-	}
-</style>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>3D Object Viewer</title>
+	</head>
+	<body>
+		<style>
+			body
+				{
+				background-color:#303030;
+				text-align:center;
+				overflow:hidden;
+				margin:0;
+				padding:0;
+				-webkit-user-select:none;
+				-moz-user-select:none;
+				user-select:none;
+				}
+			.content
+				{
+				width:100%;
+				height:100%;
+				left:0;
+				right:0;
+				top:0;
+				bottom:0;
+				margin:auto;
+				max-width:100%;
+				max-height:100%;
+				overflow:hidden;
+				text-align:center;
+				}
+			#container
+				{
+				width:100%;
+				height:100%;
+				margin-bottom:-10px;
+				overflow:hidden;
+				}
+			#container2
+				{
+				position:absolute;
+				text-align:left;
+				font-family:Arial;
+				font-size:15px;
+				color:white;
+				text-shadow:0 0 1px #000000,0 0 5px #000000;
+				left:5px;
+				top:8px;
+				margin-left:5px;
+				z-index:999;
+				cursor:default;
+				}
+			.container3
+				{
+				position:absolute;
+				bottom:0px;
+				left:0px;
+				right:0px;
+				float:left;
+				background-color:#F2F2F2;
+				border-top:1px solid silver;
+				font-family:Arial;
+				font-size:15px;
+				line-height:15px;
+				height:25px;
+				z-index:999;
+				}
+			.leftitem
+				{
+				float:left;
+				}
+			#modelOBJ
+				{
+				font-size:15px;
+				line-height:15px;
+				color:black;
+				text-align:left;
+				border:0 silver solid;
+				outline:none;
+				-webkit-box-sizing:border-box;
+				-moz-box-sizing:border-box;
+				box-sizing:border-box;
+				}
+		</style>
 
-<div class='content'>
-	<div id='container'></div>
-	<div id='container2'></div>
-	<div class='container3'>
-		<div class='leftitem'>
-			<input type='file' id='modelOBJ' onChange='runViewer();'>
+		<div class="content">
+			<div id="container"></div>
+			<div id="container2"></div>
+			<div class="container3">
+				<div class="leftitem">
+					<input type="file" id="modelOBJ" onChange="runViewer();">
+				</div>
+			</div>
 		</div>
-	</div>
-</div>
 
-<script type="text/javascript">
+<script>
 // threejs.org/license
 (function(m,ja){"object"===typeof exports&&"undefined"!==typeof module?ja(exports):"function"===typeof define&&define.amd?define(["exports"],ja):ja(m.THREE=m.THREE||{})})(this,function(m){function ja(){}function D(a,b){this.x=a||0;this.y=b||0}function K(){this.elements=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];0<arguments.length&&console.error("THREE.Matrix4: the constructor no longer reads arguments. use .set() instead.")}function ga(a,b,c,d){this._x=a||0;this._y=b||0;this._z=c||0;this._w=void 0!==d?d:1}
 function p(a,b,c){this.x=a||0;this.y=b||0;this.z=c||0}function ua(){this.elements=[1,0,0,0,1,0,0,0,1];0<arguments.length&&console.error("THREE.Matrix3: the constructor no longer reads arguments. use .set() instead.")}function S(a,b,c,d,e,f,g,h,k,l){Object.defineProperty(this,"id",{value:kf++});this.uuid=R.generateUUID();this.name="";this.image=void 0!==a?a:S.DEFAULT_IMAGE;this.mipmaps=[];this.mapping=void 0!==b?b:S.DEFAULT_MAPPING;this.wrapS=void 0!==c?c:1001;this.wrapT=void 0!==d?d:1001;this.magFilter=
@@ -1119,10 +1121,10 @@ function init(file)
 			var width = box.max.x - box.min.x;
 			var depth = box.max.y - box.min.y;
 
-			var density = parseFloat('1.05');
-			var filament_cost = parseFloat('200');
-			var filament_diameter = parseFloat('1.75');
-			var printing_speed = parseFloat('150');
+			var density = parseFloat("1.05");
+			var filament_cost = parseFloat("200");
+			var filament_diameter = parseFloat("1.75");
+			var printing_speed = parseFloat("150");
 
 			var heightFinal = height / 10;heightFinal = heightFinal.toFixed(2);
 			var widthFinal = width / 10;widthFinal = widthFinal.toFixed(2);
@@ -1248,6 +1250,7 @@ function runViewer()
 		fileInput.value = null;
 		}
 	}
-</script>
-</body>
+
+		</script>
+	</body>
 </html>
