@@ -35,6 +35,17 @@
 			// THE BROWSER LANGUAGE VARIABLE
 			var userLanguage = window.navigator.userLanguage || window.navigator.language;
 
+			var STRING_ERROR = "";
+
+			if (userLanguage.substring(0,2)=="es")
+				{
+				STRING_ERROR = "ERROR: Por favor verifique que el modelo se encuentre en formato STL, OBJ o 3DS.";
+				}
+				else
+				{
+				STRING_ERROR = "ERROR: Please check that the model is a STL, OBJ or 3DS model.";
+				}
+
 			var container, camera, scene, renderer, controls, light, vol, mesh, height, heightFinal, width, widthFinal, depth, depthFinal;
 
 			var density = parseFloat("1.05");
@@ -109,14 +120,7 @@
 					else
 					{
 					document.getElementById("container2").style.display="none";
-					if (userLanguage.substring(0,2)=="es")
-						{
-						alert("ERROR: Por favor verifique que el modelo se encuentre en formato STL, OBJ o 3DS.");
-						}
-						else
-						{
-						alert("ERROR: Please check that the model is a STL, OBJ or 3DS model.");
-						}
+					alert(STRING_ERROR);
 					}
 
 				reader.addEventListener("load", function (event)
@@ -261,14 +265,7 @@
 						catch(err)
 						{
 						document.getElementById("container2").style.display="none";
-						if (userLanguage.substring(0,2)=="es")
-							{
-							alert("ERROR: Por favor verifique que el modelo se encuentre en formato STL, OBJ o 3DS.");
-							}
-							else
-							{
-							alert("ERROR: Please check that the model is a STL, OBJ or 3DS model.");
-							}	
+						alert(STRING_ERROR);
 						}
 					}, false);
 
