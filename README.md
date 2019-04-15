@@ -5,7 +5,7 @@
 ![alt screenshot](https://raw.githubusercontent.com/lrusso/3DObjectViewer/master/3DObjectViewer.png)
 
 ## Web version
-https://3dobjectviewer.lrusso.com.ar
+https://lrusso.github.io/3DObjectViewer/3DObjectViewer.htm
 
 ## App version
 https://play.google.com/store/apps/details?id=ar.com.lrusso.dobjectviewer
