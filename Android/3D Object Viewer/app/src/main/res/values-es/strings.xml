@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="textAbout">Acerca de...</string>
-    <string name="textAboutMessage"><![CDATA[<h3>3D Object Viewer</h3>Copyright &#169; ANOS<br /><br /><b>www.lrusso.com.ar</b><br /><br />por Leonardo Javier Russo.]]></string>
+    <string name="textAboutMessage"><![CDATA[<h3>APPNAME</h3>Copyright &#169; 2005<br /><br /><b>www.lrusso.com</b><br /><br />por Leonardo Javier Russo.]]></string>
     <string name="textOK">Aceptar</string>
     <string name="textChangeDensity">Cambiar densidad (gm/cc)</string>
     <string name="textChangeSpeed">Cambiar velocidad de impresión (mm/s)</string>
