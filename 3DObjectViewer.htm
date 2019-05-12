@@ -8,6 +8,11 @@
 		<meta name="viewport" content="width=380, initial-scale=1, maximum-scale=1"/>
 	</head>
 	<body>
+		<div id="loading" class="loading_splash">
+			<div class="loading_splash_container">
+				<div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+			</div>
+		</div>
 		<div class="content">
 			<div id="container"></div>
 			<div id="container2">
@@ -109,18 +114,40 @@
 
 				if (extension=="stl")
 					{
-					reader.readAsArrayBuffer(file);
+					// SHOWING THE LOADING SPLASH
+					document.getElementById("loading").style.display = "block";
+
+					// GIVES TIME TO THE UI TO SHOW THE LOADING SPLASH
+					setTimeout(function()
+						{
+						reader.readAsArrayBuffer(file);
+						}, 500);
 					}
 				else if (extension=="3ds")
 					{
-					reader.readAsArrayBuffer(file);
+					// SHOWING THE LOADING SPLASH
+					document.getElementById("loading").style.display = "block";
+					// GIVES TIME TO THE UI TO SHOW THE LOADING SPLASH
+					setTimeout(function()
+						{
+						reader.readAsArrayBuffer(file);
+						}, 500);
 					}
 				else if (extension=="obj")
 					{
-					reader.readAsText(file);
+					// SHOWING THE LOADING SPLASH
+					document.getElementById("loading").style.display = "block";
+					// GIVES TIME TO THE UI TO SHOW THE LOADING SPLASH
+					setTimeout(function()
+						{
+						reader.readAsText(file);
+						}, 500);
 					}
 					else
 					{
+					// HIDDING THE LOADING SPLASH
+					document.getElementById("loading").style.display = "none";
+
 					document.getElementById("container2").style.display="none";
 					alert(STRING_ERROR);
 					}
@@ -263,9 +290,15 @@
 						controls.update();
 
 						scene.add(mesh);
+
+						// HIDDING THE LOADING SPLASH
+						document.getElementById("loading").style.display = "none";
 						}
 						catch(err)
 						{
+						// HIDDING THE LOADING SPLASH
+						document.getElementById("loading").style.display = "none";
+
 						document.getElementById("container2").style.display="none";
 						alert(STRING_ERROR);
 						}
