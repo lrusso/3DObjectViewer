@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
     defaultConfig {
         applicationId "ar.com.lrusso.dobjectviewer"
         minSdkVersion 21
-        targetSdkVersion 33
-        versionCode 24
-        versionName "1.6.9"
+        targetSdkVersion 34
+        versionCode 25
+        versionName "1.6.10"
     }
     buildTypes {
         release {
