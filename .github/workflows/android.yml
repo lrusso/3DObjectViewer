@@ -16,11 +16,11 @@ jobs:
         env:
           COMPLETE_KEYSTORE_FILE: "${{ secrets.ANDROID_KEYSTORE_PART1 }}${{ secrets.ANDROID_KEYSTORE_PART2 }}${{ secrets.ANDROID_KEYSTORE_PART3 }}"
         run: |
-          echo "$COMPLETE_KEYSTORE_FILE" | base64 -di > "Android/3D Object Maker/keystore"
+          echo "$COMPLETE_KEYSTORE_FILE" | base64 -di > "Android/3D Object Viewer/keystore"
       - name: Making Gradlew executable
-        run: chmod +x "./Android/3D Object Maker/gradlew"
+        run: chmod +x "./Android/3D Object Viewer/gradlew"
       - name: Building the AAB file
-        run: cd Android && cd "3D Object Maker" && ./gradlew clean && ./gradlew bundleRelease
+        run: cd Android && cd "3D Object Viewer" && ./gradlew clean && ./gradlew bundleRelease
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
@@ -29,9 +29,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release-aab
-          path: "Android/3D Object Maker/app/build/outputs/bundle/release/app-release.aab"
+          path: "Android/3D Object Viewer/app/build/outputs/bundle/release/app-release.aab"
       - name: Building the APK file
-        run: cd Android && cd "3D Object Maker" && ./gradlew clean && ./gradlew assembleRelease
+        run: cd Android && cd "3D Object Viewer" && ./gradlew clean && ./gradlew assembleRelease
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release-apk
-          path: "Android/3D Object Maker/app/build/outputs/apk/release/app-release.apk"
+          path: "Android/3D Object Viewer/app/build/outputs/apk/release/app-release.apk"
 
 # ------------------------------------------------------------------------------------------------------
 #
