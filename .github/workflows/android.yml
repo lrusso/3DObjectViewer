@@ -1,0 +1,98 @@
+name: Build App Android
+
+on: workflow_dispatch
+
+jobs:
+  app-builder-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setting up the environment
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: 17
+      - name: Decoding and writing the Keystore file
+        env:
+          COMPLETE_KEYSTORE_FILE: "${{ secrets.ANDROID_KEYSTORE_PART1 }}${{ secrets.ANDROID_KEYSTORE_PART2 }}${{ secrets.ANDROID_KEYSTORE_PART3 }}"
+        run: |
+          echo "$COMPLETE_KEYSTORE_FILE" | base64 -di > "Android/3D Object Maker/keystore"
+      - name: Making Gradlew executable
+        run: chmod +x "./Android/3D Object Maker/gradlew"
+      - name: Building the AAB file
+        run: cd Android && cd "3D Object Maker" && ./gradlew clean && ./gradlew bundleRelease
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      - name: Attaching the AAB file to this workflow
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-aab
+          path: "Android/3D Object Maker/app/build/outputs/bundle/release/app-release.aab"
+      - name: Building the APK file
+        run: cd Android && cd "3D Object Maker" && ./gradlew clean && ./gradlew assembleRelease
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      - name: Attaching the APK file to this workflow
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: "Android/3D Object Maker/app/build/outputs/apk/release/app-release.apk"
+
+# ------------------------------------------------------------------------------------------------------
+#
+# WHAT THIS WORKFLOW DOES?
+#
+# This workflow will build two files: app-release.apk and app-release.aab. Both files are going to be
+# attached as Artifacts (ZIP files) and available for downloading in that workflow Summary.
+#
+# ------------------------------------------------------------------------------------------------------
+#
+# HOW CAN I SET THIS WORKFLOW?
+#
+# This is a one time operation. You have to go to your repository and Settings/Secrets/Actions and
+# there you have to create the following secrets:
+#
+# ANDROID_KEYSTORE (must contain your release keystore in Base64)
+# ANDROID_KEYSTORE_PASSWORD (must be a plain text with your Keystore Password)
+# ANDROID_KEY_ALIAS (must be a plain text with your Key Alias)
+# ANDROID_KEY_PASSWORD (must be a plain text with your Key Password)
+#
+# After that you have to edit the following file: android/app/build.gradle
+# 
+# There, you must add this:
+#
+#    signingConfigs {
+#        release {
+#            storeFile file("../keystore")
+#            storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+#            keyAlias System.getenv("ANDROID_KEY_ALIAS")
+#            keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+#        }
+#    }
+#
+# And also add the following line:
+#
+#    signingConfig signingConfigs.release
+#
+# To the buildType release, so you will have something similar to the setting below:
+#
+#    buildTypes {
+#        release {
+#            minifyEnabled false
+#            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+#            signingConfig signingConfigs.release
+#        }
+#    }
+#
+# ------------------------------------------------------------------------------------------------------
+#
+# HOW CAN I USE THIS WORKFLOW?
+#
+# This workflow must be trigged manually, once executed and after a few minutes, the workflow will be
+# completed successfully and the two files (the APK and the AAB files) are going to be attached as
+# Artifacts (ZIP files) and available for downloading in that workflow Summary.
+#
