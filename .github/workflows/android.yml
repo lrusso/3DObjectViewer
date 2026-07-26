@@ -6,9 +6,9 @@ jobs:
   app-builder-android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setting up the environment
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v5
         with:
           distribution: "zulu"
           java-version: 17
@@ -26,7 +26,7 @@ jobs:
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
       - name: Attaching the AAB file to this workflow
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: app-release-aab
           path: "Android/3D Object Viewer/app/build/outputs/bundle/release/app-release.aab"
@@ -37,7 +37,7 @@ jobs:
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
       - name: Attaching the APK file to this workflow
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: app-release-apk
           path: "Android/3D Object Viewer/app/build/outputs/apk/release/app-release.apk"
