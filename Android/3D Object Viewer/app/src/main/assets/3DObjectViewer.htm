@@ -6,6 +6,10 @@
 	</head>
 	<body>
 		<style>
+			html
+				{
+				height:100%;
+				}
 			body
 				{
 				background-color:#303030;
@@ -13,30 +17,35 @@
 				overflow:hidden;
 				margin:0;
 				padding:0;
+				height:100%;
 				-webkit-user-select:none;
 				-moz-user-select:none;
 				user-select:none;
 				}
 			.content
 				{
-				width:100%;
-				height:100%;
+				position:fixed;
 				left:0;
 				right:0;
 				top:0;
 				bottom:0;
-				margin:auto;
-				max-width:100%;
-				max-height:100%;
 				overflow:hidden;
 				text-align:center;
 				}
 			#container
 				{
-				width:100%;
-				height:100%;
-				margin-bottom:-10px;
+				position:absolute;
+				left:0;
+				right:0;
+				top:0;
+				bottom:0;
 				overflow:hidden;
+				}
+			#container canvas
+				{
+				display:block;
+				width:100% !important;
+				height:100% !important;
 				}
 			#container2
 				{
@@ -1055,12 +1064,27 @@ var userLanguage = window.navigator.userLanguage || window.navigator.language;
 
 var container, camera, scene, renderer, controls, light, vol, mesh;
 
+// THE SIZE OF THE 3D VIEW IS TAKEN FROM THE CONTAINER AND NEVER FROM
+// window.innerWidth / window.innerHeight, BECAUSE SINCE ANDROID 15 THE ACTIVITY
+// IS DRAWN EDGE TO EDGE AND THE WINDOW IS BIGGER THAN THE VISIBLE WEBVIEW AREA
+function viewerSize()
+	{
+	var element = document.getElementById("container");
+	var w = element ? element.clientWidth : 0;
+	var h = element ? element.clientHeight : 0;
+	if (!w) {w = document.documentElement.clientWidth || window.innerWidth;}
+	if (!h) {h = document.documentElement.clientHeight || window.innerHeight;}
+	return {width:Math.max(1,Math.round(w)),height:Math.max(1,Math.round(h))};
+	}
+
 function init(file)
 	{
 	container = document.getElementById("container");
 	container.innerHTML= "";
 
-	camera = new THREE.PerspectiveCamera(37.8,window.innerWidth/window.innerHeight,1,100000);
+	var size = viewerSize();
+
+	camera = new THREE.PerspectiveCamera(37.8,size.width/size.height,1,100000);
 
 	camera.position.z=300;
 	camera.position.y=-500;
@@ -1293,7 +1317,7 @@ function init(file)
 	scene.add(light);
 
 	renderer = new THREE.WebGLRenderer({antialias:true});
-	renderer.setSize(window.innerWidth,window.innerHeight);
+	renderer.setSize(size.width,size.height);
 	container.appendChild(renderer.domElement);
 
 	requestAnimationFrame(animate);
@@ -1310,9 +1334,11 @@ function animate()
 
 function onWindowResize()
 	{
-	camera.aspect = window.innerWidth / window.innerHeight;
+	var size = viewerSize();
+
+	camera.aspect = size.width / size.height;
 	camera.updateProjectionMatrix();
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setSize(size.width, size.height);
 	}
 
 function runViewer()

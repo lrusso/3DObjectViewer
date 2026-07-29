@@ -5,7 +5,7 @@
 		<title>3D Object Viewer</title>
 		<link rel="stylesheet" type="text/css" href="3DObjectViewer.css">
 		<meta name="theme-color" content="#3f729b"/>
-		<meta name="viewport" content="width=380, initial-scale=1, maximum-scale=1"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 	</head>
 	<body>
 		<div id="loading" class="loading_splash">
@@ -55,6 +55,19 @@
 
 			var container, camera, scene, renderer, controls, light, vol, mesh, height, heightFinal, width, widthFinal, depth, depthFinal;
 
+			// THE SIZE OF THE 3D VIEW IS TAKEN FROM THE CONTAINER AND NEVER FROM
+			// window.innerWidth / window.innerHeight, BECAUSE THE WINDOW CAN BE
+			// BIGGER THAN THE AREA THE CANVAS IS SUPPOSED TO USE
+			function viewerSize()
+				{
+				var element = document.getElementById("container");
+				var w = element ? element.clientWidth : 0;
+				var h = element ? element.clientHeight : 0;
+				if (!w) {w = document.documentElement.clientWidth || window.innerWidth;}
+				if (!h) {h = document.documentElement.clientHeight || window.innerHeight;}
+				return {width:Math.max(1,Math.round(w)),height:Math.max(1,Math.round(h))};
+				}
+
 			var density = parseFloat("1.05");
 			var filament_cost = parseFloat("200");
 			var filament_diameter = parseFloat("1.75");
@@ -96,7 +109,9 @@
 				container = document.getElementById("container");
 				container.innerHTML= "";
 
-				camera = new THREE.PerspectiveCamera(37.8,window.innerWidth/window.innerHeight,1,100000);
+				var size = viewerSize();
+
+				camera = new THREE.PerspectiveCamera(37.8,size.width/size.height,1,100000);
 
 				camera.position.z=300;
 				camera.position.y=-500;
@@ -311,7 +326,7 @@
 				scene.add(light);
 
 				renderer = new THREE.WebGLRenderer({antialias:false});
-				renderer.setSize(window.innerWidth,window.innerHeight);
+				renderer.setSize(size.width,size.height);
 				container.appendChild(renderer.domElement);
 
 				requestAnimationFrame(animate);
@@ -328,9 +343,11 @@
 
 			function onWindowResize()
 				{
-				camera.aspect = window.innerWidth / window.innerHeight;
+				var size = viewerSize();
+
+				camera.aspect = size.width / size.height;
 				camera.updateProjectionMatrix();
-				renderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.setSize(size.width, size.height);
 				}
 
 			function moreDensity(a)
