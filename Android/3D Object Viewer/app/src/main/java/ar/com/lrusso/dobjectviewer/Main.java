@@ -54,7 +54,14 @@ public class Main extends Activity
 		webView = (WebView) findViewById(R.id.webView1);
 		webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
-        
+
+        // THE PINCH GESTURE MUST REACH THE 3D VIEWER (IT MOVES THE CAMERA) AND
+        // NEVER ZOOM THE PAGE, BECAUSE ZOOMING THE PAGE MAKES THE CANVAS BIGGER
+        // THAN THE VISIBLE AREA OF THE WEBVIEW
+        webView.getSettings().setSupportZoom(false);
+        webView.getSettings().setBuiltInZoomControls(false);
+        webView.getSettings().setDisplayZoomControls(false);
+
         loadConfigsAndWebView();
         
         webView.setWebViewClient(new myWebClient());

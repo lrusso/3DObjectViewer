@@ -10,6 +10,10 @@ body
 	margin:0;
 	padding:0;
 	height:100%;
+	-ms-touch-action:none;
+	touch-action:none;
+	-webkit-text-size-adjust:100%;
+	text-size-adjust:100%;
 	-webkit-user-select:none;
 	-moz-user-select:none;
 	user-select:none;
